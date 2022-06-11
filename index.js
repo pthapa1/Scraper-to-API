@@ -1,7 +1,7 @@
-const { link } = require('fs');
 const puppeteer = require('puppeteer');
+// const { link } = require('fs');
 
-const query = 'hotels in Ireland';
+const query = 'hotels in Germany';
 const url = `https://www.google.com/maps/search/${query}`;
 
 (async () => {
@@ -12,20 +12,41 @@ const url = `https://www.google.com/maps/search/${query}`;
   const page = await browser.newPage();
   await page.goto(url);
 
+  // getting Names of business
   await page.waitForSelector('.hfpxzc');
-  const businessLinks = await page.$$eval('.hfpxzc', (divs) =>
-    Array.from(divs).map((div) => div?.getAttribute('aria-label'))
+  const businessNames = await page.$$eval('.hfpxzc', (divs) =>
+    Array.from(divs).map(
+      (div) => div?.getAttribute('aria-label')
+      //&& div?.getAttribute('href')
+      // separated in order to get two different arrays.
+    )
   );
+  console.log(businessNames);
+  // businessLinks
+  const businessLinks = await page.$$eval('.hfpxzc', (divs) =>
+    Array.from(divs).map((div) => div?.getAttribute('href'))
+  );
+  // console.log(businessLinks);
 
-  console.log(businessLinks);
-  // to retreive address
-  // First find the array
-  // on each, click and get the address
-  // then print all the address in an array.
+  // lets loop through above arrays and grab addresses.
+  for (let businessLink of businessLinks) {
+    await page.goto(businessLink);
+    const selectBusinessAddress = await page.$('.Io6YTe');
+    const businessAddress = await selectBusinessAddress.evaluate(
+      (el) => el.textContent
+    );
 
-  // document.querySelector('.Io6YTe').textContent
-})(); // can't use for each outside of page.evaluate.
+    console.log(businessAddress);
 
-// https://stackoverflow.com/questions/52827121/puppeteer-how-to-get-the-contents-of-each-element-of-a-nodelist
+    // combine all the extracted values into an array.
 
-// Do this instead
+    // const businessAddressArray = [];
+
+    // for (let i = 0; i < businessAddress.length; i++) {
+    //   businessAddressArray.push(i);
+    // }
+    // console.log(businessAddressArray);
+  }
+
+  await browser.close();
+})();
