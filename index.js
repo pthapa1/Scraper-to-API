@@ -2,72 +2,70 @@ const puppeteer = require('puppeteer');
 const userAgent = require('user-agents');
 const express = require('express');
 
-let query = 'hotels in South Africa';
-const url = `https://www.google.com/maps/search/${query}`;
+const app = express();
 
-(async () => {
-  const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: null,
-  });
-  const page = await browser.newPage();
-  await page.setUserAgent(userAgent.toString());
-  await page.goto(url);
+app.get('/address/:country', (req, res) => {
+  let country = `hotels in ${req.params.country}`;
+  const url = `https://www.google.com/maps/search/${country}`;
 
-  // getting Names of business
-  await page.waitForSelector('.hfpxzc');
-  const businessNames = await page.$$eval('.hfpxzc', (divs) =>
-    Array.from(divs).map(
-      (div) => div?.getAttribute('aria-label')
-      //&& div?.getAttribute('href')
-      // separated in order to get two different arrays.
-    )
-  );
-  //console.log(businessNames); // generates array of names.
+  (async () => {
+    const browser = await puppeteer.launch({
+      headless: true,
+      defaultViewport: null,
+    });
+    const page = await browser.newPage();
+    await page.setUserAgent(userAgent.toString());
+    await page.goto(url);
 
-  // businessLinks
-  const businessLinks = await page.$$eval('.hfpxzc', (divs) =>
-    Array.from(divs).map((div) => div?.getAttribute('href'))
-  );
-
-  // lets loop through above business link arrays and grab addresses.
-  const businessAddressArray = [];
-
-  for (let businessLink of businessLinks) {
-    await page.goto(businessLink);
-    const selectBusinessAddress = await page.$('.Io6YTe');
-
-    const businessAddress = await selectBusinessAddress.evaluate(
-      (el) => el.textContent
+    // getting Names of business
+    await page.waitForSelector('.hfpxzc');
+    const businessNames = await page.$$eval('.hfpxzc', (divs) =>
+      Array.from(divs).map(
+        (div) => div?.getAttribute('aria-label')
+        //&& div?.getAttribute('href')
+        // separated in order to get two different arrays.
+      )
     );
-    businessAddressArray.push(businessAddress);
-  }
-  //console.log(businessAddressArray);
+    //console.log(businessNames); // generates array of names.
 
-  // make a JSON Object from the two arrays
+    // businessLinks
+    const businessLinks = await page.$$eval('.hfpxzc', (divs) =>
+      Array.from(divs).map((div) => div?.getAttribute('href'))
+    );
 
-  const combinedBusinessInfo = (businessNames, businessAddressArray) => {
-    const combinedArray = [];
-    for (let i = 0; i < businessNames.length; i++) {
-      combinedArray.push({
-        name: businessNames[i],
-        address: businessAddressArray[i],
-      });
+    // lets loop through above business link arrays and grab addresses.
+    const businessAddressArray = [];
+
+    for (let businessLink of businessLinks) {
+      await page.goto(businessLink);
+      const selectBusinessAddress = await page.$('.Io6YTe');
+
+      const businessAddress = await selectBusinessAddress.evaluate(
+        (el) => el.textContent
+      );
+      businessAddressArray.push(businessAddress);
     }
-    return combinedArray;
-  };
+    //console.log(businessAddressArray);
 
-  //console.log(combinedBusinessInfo(businessNames, businessAddressArray));
+    // make a JSON Object from the two arrays
 
-  await browser.close();
+    const combinedBusinessInfo = (businessNames, businessAddressArray) => {
+      const combinedArray = [];
+      for (let i = 0; i < businessNames.length; i++) {
+        combinedArray.push({
+          name: businessNames[i],
+          address: businessAddressArray[i],
+        });
+      }
+      return combinedArray;
+    };
 
-  // setting up route
+    //console.log(combinedBusinessInfo(businessNames, businessAddressArray));
 
-  const app = express();
+    await browser.close();
 
-  app.get('/address', (req, res) => {
     res.send(combinedBusinessInfo(businessNames, businessAddressArray));
-  });
+  })();
+});
 
-  app.listen(3000, () => console.log('API Server is running'));
-})();
+app.listen(3000, () => console.log('API Server is running'));
