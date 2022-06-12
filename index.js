@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
+const userAgent = require('user-agents');
+const express = require('express');
 
-const query = 'hotels in Canada';
+let query = 'hotels in South Africa';
 const url = `https://www.google.com/maps/search/${query}`;
 
 (async () => {
@@ -9,6 +11,7 @@ const url = `https://www.google.com/maps/search/${query}`;
     defaultViewport: null,
   });
   const page = await browser.newPage();
+  await page.setUserAgent(userAgent.toString());
   await page.goto(url);
 
   // getting Names of business
@@ -54,7 +57,17 @@ const url = `https://www.google.com/maps/search/${query}`;
     return combinedArray;
   };
 
-  console.log(combinedBusinessInfo(businessNames, businessAddressArray));
+  //console.log(combinedBusinessInfo(businessNames, businessAddressArray));
 
   await browser.close();
+
+  // setting up route
+
+  const app = express();
+
+  app.get('/address', (req, res) => {
+    res.send(combinedBusinessInfo(businessNames, businessAddressArray));
+  });
+
+  app.listen(3000, () => console.log('API Server is running'));
 })();
