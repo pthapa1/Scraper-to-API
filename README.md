@@ -53,7 +53,7 @@ http://localhost:3000/address/South%20Africa
 ```
 
 - Sample Image
-  [![Postman Screenshot](./Scraper-to-API.png 'Postman, Get Request Sample')]
+  ![Postman Screenshot](./Scraper-to-API.png 'Postman, Get Request Sample')
 
 ### Improvements to make pursue
 
