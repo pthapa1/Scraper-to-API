@@ -42,7 +42,7 @@ node index.js
 For example,
 
 ```
-GET | http://localhost:3000/address/{country/cityName}
+GET | http://localhost:3000/address/{country_or_a_cityName}
 
 ```
 
