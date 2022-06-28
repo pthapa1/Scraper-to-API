@@ -4,9 +4,9 @@ const express = require('express');
 
 const app = express();
 
-app.get('/address/:country', (req, res) => {
-  let country = `hotels in ${req.params.country}`;
-  const url = `https://www.google.com/maps/search/${country}`;
+app.get('/address/:query', (req, res) => {
+  let query = `hotels in ${req.params.query}`;
+  const url = `https://www.google.com/maps/search/${query}`;
 
   (async () => {
     const browser = await puppeteer.launch({
