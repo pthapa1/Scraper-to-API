@@ -69,5 +69,5 @@ http://localhost:3000/address/South%20Africa
 
 ### Improved
 
-- [ x ] Now the app check for empty string and Invalid String in the URL.
-- [ x ] Now the app direct users to use proper URL.
+- [x] Now the app check for empty string and Invalid String in the URL.
+- [x] Now the app direct users to use proper URL.
