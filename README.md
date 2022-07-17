@@ -64,3 +64,10 @@ http://localhost:3000/address/South%20Africa
 - More data: The app does not go beyond one page to scrape data and scrapes everthing that's there. I would like the user to decide a number of addresses they need in the URL parameter and generate the certain amount as desired.
 
 - Include more routes: I have yet to implement other routes for errors.
+
+---
+
+### Improved
+
+- [ x ] Now the app check for empty string and Invalid String in the URL.
+- [ x ] Now the app direct users to use proper URL.
