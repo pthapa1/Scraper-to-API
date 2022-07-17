@@ -22,7 +22,7 @@ app.get('/address/:countryOrCityName', (req, res, next) => {
 
   if (emptyStringCheck.test(userInput) || !userInput) {
     res.status(400).json({ mesage: `⚠️ EMPTY STRING ⚠️. ${errorMessage}` });
-  } else if (specialCharacterCheck.test(query)) {
+  } else if (specialCharacterCheck.test(userInput)) {
     res.status(400).json({ message: specialCharacterErrorMessage });
   } else {
     (async () => {
