@@ -140,7 +140,6 @@ app.get('/address/:countryOrCityName', (req, res, next) => {
 
       await browser.close();
 
-      //res.send(combinedBusinessInfo(businessNames, businessAddressArray));
       if (finalResponseArray.length === 0) {
         res.status(500).json({ mesage: `${internalServerError}` });
       } else {
