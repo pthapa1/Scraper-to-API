@@ -71,3 +71,7 @@ http://localhost:3000/address/South%20Africa
 
 - [x] Now the app check for empty string and Invalid String in the URL.
 - [x] Now the app direct users to use proper URL.
+- [x] Application throws internal Server Error if google maps fails or if the result is empty.
+- [x] Performance is improved by using concurrency setting of 10, used from bluebird library.
+- [x] Page scrolls to get desired items. Currently hard-coded for 20 items.
+- [x] Async disposer pattern is implemented to avoid memory leak in case browser does not respond or close during search or after search.
