@@ -133,11 +133,15 @@ app.get('/address/:countryOrCityName', (req, res, next) => {
       };
 
       //console.log(combinedBusinessInfo(businessNames, businessAddressArray));
+      const finalResponseArray = combinedBusinessInfo(
+        businessNames,
+        businessAddressArray
+      );
 
       await browser.close();
 
       //res.send(combinedBusinessInfo(businessNames, businessAddressArray));
-      if (combinedArray.length === 0) {
+      if (finalResponseArray.length === 0) {
         res.status(500).json({ mesage: `${internalServerError}` });
       } else {
         res.send(combinedBusinessInfo(businessNames, businessAddressArray));
