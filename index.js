@@ -7,6 +7,7 @@ const port = 3000;
 // Error Messages
 const errorMessage = `Please enter country or city name in the url: /address/{here}`;
 const specialCharacterErrorMessage = `Please enter country or city Name without any special characters`;
+const internalServerError = `Opps! Something went wrong on our part. Please try again later!`;
 
 // Regular Expression Checks
 const emptyStringCheck = /^\s*$/;
@@ -119,9 +120,9 @@ app.get('/address/:countryOrCityName', (req, res, next) => {
       //console.log(businessAddressArray);
 
       // make a JSON Object from the two arrays
+      const combinedArray = [];
 
       const combinedBusinessInfo = (businessNames, businessAddressArray) => {
-        const combinedArray = [];
         for (let i = 0; i < businessNames.length; i++) {
           combinedArray.push({
             name: businessNames[i],
@@ -135,7 +136,12 @@ app.get('/address/:countryOrCityName', (req, res, next) => {
 
       await browser.close();
 
-      res.send(combinedBusinessInfo(businessNames, businessAddressArray));
+      //res.send(combinedBusinessInfo(businessNames, businessAddressArray));
+      if (combinedArray.length === 0) {
+        res.status(500).json({ mesage: `${internalServerError}` });
+      } else {
+        res.send(combinedBusinessInfo(businessNames, businessAddressArray));
+      }
     })();
   }
 });
