@@ -57,13 +57,11 @@ http://localhost:3000/address/South%20Africa
 
 ### Improvements to make pursue
 
-- Performance: The app checks the url one by one for addresses. Therefore, the performance is slow. If possible, I would like to make this faster by simultaneously opening all links saved in the array.
-
+- Performance: improvement is a continious process. It is faster than earlier version of the app but more will need to be done in the future to scale it up.
 - Show addresses from different country: Currently the app only checks for hotels in Google Map
-
-- More data: The app does not go beyond one page to scrape data and scrapes everthing that's there. I would like the user to decide a number of addresses they need in the URL parameter and generate the certain amount as desired.
-
-- Include more routes: I have yet to implement other routes for errors.
+- https on express server
+- Deploy it on AWS API gateway.
+- Build react app to consume and spit the data.
 
 ---
 
