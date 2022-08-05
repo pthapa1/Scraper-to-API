@@ -75,3 +75,4 @@ http://localhost:3000/address/South%20Africa
 - [x] Performance is improved by using concurrency setting of 10, used from bluebird library.
 - [x] Page scrolls to get desired items. Currently hard-coded for 20 items.
 - [x] Async disposer pattern is implemented to avoid memory leak in case browser does not respond or close during search or after search.
+- [x] Now the Api extracts phone Number for business.

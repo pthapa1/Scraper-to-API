@@ -98,8 +98,10 @@ app.get('/address/:countryOrCityName', (req, res, next) => {
         Array.from(divs).map((div) => div?.getAttribute('href'))
       );
 
-      // lets loop through above business link arrays and grab addresses.
+      // lets loop through above business link arrays and grab addresses and phone numbers
+      const businessAddressAndPhoneArray = [];
       const businessAddressArray = [];
+      const businessPhoneArray = [];
 
       await withBrowser(async (browser) => {
         return bluebird.map(
@@ -107,35 +109,59 @@ app.get('/address/:countryOrCityName', (req, res, next) => {
           async (businessLink) => {
             return withPage(browser)(async (page) => {
               await page.goto(businessLink);
-              const selectBusinessAddress = await page.$('.Io6YTe');
-              const businessAddress = await selectBusinessAddress.evaluate(
-                (el) => el.textContent
-              );
-              businessAddressArray.push(businessAddress);
+
+              //
+              const selectBusinessDetails = await page.evaluate(() => {
+                const allBusinessDetails = Array.from(
+                  document.querySelectorAll('.Io6YTe')
+                ).map((element) => element.firstChild.nodeValue);
+                const validBusinessDetails = allBusinessDetails.filter(
+                  (element) => element !== null
+                );
+                const businessPhoneNumber = validBusinessDetails
+                  .map((el) => el.replace(/[^\d\+]/g, ''))
+                  .filter((el) => el !== '')
+                  .filter((el) => /[\+]?\d{8}\d*/gm.test(el))[0];
+
+                const businessAddress = validBusinessDetails[0];
+                return [businessAddress, businessPhoneNumber];
+              });
+              //
+              businessAddressAndPhoneArray.push(selectBusinessDetails);
             });
           },
           { concurrency: 10 }
         );
       });
-      //console.log(businessAddressArray);
+
+      //
+      for (businessItems of businessAddressAndPhoneArray) {
+        businessAddressArray.push(businessItems[0]);
+        businessPhoneArray.push(businessItems[1]);
+      }
 
       // make a JSON Object from the two arrays
       const combinedArray = [];
 
-      const combinedBusinessInfo = (businessNames, businessAddressArray) => {
+      const combinedBusinessInfo = (
+        businessNames,
+        businessAddressArray,
+        businessPhoneArray
+      ) => {
         for (let i = 0; i < businessNames.length; i++) {
           combinedArray.push({
             name: businessNames[i],
             address: businessAddressArray[i],
+            phone: businessPhoneArray[i],
           });
         }
         return combinedArray;
       };
 
-      //console.log(combinedBusinessInfo(businessNames, businessAddressArray));
       const finalResponseArray = combinedBusinessInfo(
         businessNames,
-        businessAddressArray
+        businessAddressArray,
+        businessPhoneArray
       );
 
       await browser.close();
