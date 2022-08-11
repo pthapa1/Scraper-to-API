@@ -32,9 +32,7 @@ app.get('/address/:countryOrCityName', (req, res) => {
   } else {
     (async () => {
       const browser = await puppeteer.launch({
-        executablePath: '/usr/bin/google-chrome-stable',
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
       const page = await browser.newPage();
       await page.setUserAgent(userAgent.toString());
