@@ -33,6 +33,13 @@ app.get('/address/:countryOrCityName', (req, res) => {
     (async () => {
       const browser = await puppeteer.launch({
         headless: true,
+        executablePath: '/usr/bin/chromium-browser',
+        args: [
+          '--no-sandbox',
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-setuid-sandbox',
+        ],
       });
       const page = await browser.newPage();
       await page.setUserAgent(userAgent.toString());

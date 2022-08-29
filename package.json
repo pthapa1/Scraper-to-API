@@ -6,13 +6,16 @@
     "user-agents": "^1.0.1045"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "name": "scraper-to-api",
   "description": "This API provides up to 10 random business name and addresses of any country/city you pass in the parameter along with a get request.",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pthapa1/Scraper-to-API.git"
