@@ -57,10 +57,9 @@ http://localhost:3000/address/South%20Africa
 
 ### Improvements to make pursue
 
-- Performance: improvement is a continious process. It is faster than earlier version of the app but more will need to be done in the future to scale it up.
+- Performance improvement is a continious process. It is faster than earlier version of the app but more will need to be done in the future to scale it up.
 - Show addresses from different country: Currently the app only checks for hotels in Google Map
 - https on express server
-- Deploy it on AWS API gateway.
 - Build react app to consume and spit the data.
 
 ---
@@ -74,3 +73,4 @@ http://localhost:3000/address/South%20Africa
 - [x] Page scrolls to get desired items. Currently hard-coded for 20 items.
 - [x] Async disposer pattern is implemented to avoid memory leak in case browser does not respond or close during search or after search.
 - [x] Now the Api extracts phone Number for business.
+- [x] Dockerized the application on Node-alipne image.

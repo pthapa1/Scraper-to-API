@@ -1,5 +1,4 @@
 FROM node:lts-alpine
-# Create a group and user
 
 WORKDIR /app
 
