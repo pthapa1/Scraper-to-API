@@ -5,7 +5,7 @@ const bluebird = require('bluebird');
 const functions = require('./functions.js');
 const messages = require('./messages');
 const port = process.env.PORT || 3000;
-const numberofResults = 20;
+const numberofResults = 10;
 
 // Regular Expression Checks
 const emptyStringCheck = /^\s*$/;
