@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const userAgent = require('user-agents');
 const express = require('express');
 const bluebird = require('bluebird');
+const cors = require('cors');
 const functions = require('./functions.js');
 const messages = require('./messages');
 const port = process.env.PORT || 3000;
@@ -12,6 +13,7 @@ const emptyStringCheck = /^\s*$/;
 const specialCharacterCheck = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
 const app = express();
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: messages.welcomeHomeMessage });
