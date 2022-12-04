@@ -13,7 +13,7 @@ const emptyStringCheck = /^\s*$/;
 const specialCharacterCheck = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: messages.welcomeHomeMessage });
