@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const userAgent = require('user-agents');
 const express = require('express');
 const bluebird = require('bluebird');
-const cors = require('cors');
 const functions = require('./functions.js');
 const messages = require('./messages');
 const port = process.env.PORT || 3000;
@@ -13,7 +12,6 @@ const emptyStringCheck = /^\s*$/;
 const specialCharacterCheck = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
 const app = express();
-app.use(cors({ origin: '*' }));
 
 app.get('/', (req, res) => {
   res.status(200).json({ message: messages.welcomeHomeMessage });
@@ -35,13 +33,7 @@ app.get('/address/:countryOrCityName', (req, res) => {
     (async () => {
       const browser = await puppeteer.launch({
         headless: true,
-        executablePath: '/usr/bin/chromium-browser',
-        args: [
-          '--no-sandbox',
-          '--disable-gpu',
-          '--disable-dev-shm-usage',
-          '--disable-setuid-sandbox',
-        ],
+        defaultViewport: null,
       });
       const page = await browser.newPage();
       await page.setUserAgent(userAgent.toString());
