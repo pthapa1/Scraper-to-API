@@ -5,7 +5,7 @@ const bluebird = require('bluebird');
 const functions = require('./functions.js');
 const messages = require('./messages');
 const port = process.env.PORT || 3000;
-const numberofResults = 10;
+const numberofResults = 100;
 
 // Regular Expression Checks
 const emptyStringCheck = /^\s*$/;
@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: messages.welcomeHomeMessage });
 });
 
-app.get('/address/:countryOrCityName', (req, res) => {
-  let query = `hotels in ${req.params.countryOrCityName}`;
+app.get('/address/:addressType/:countryOrCityName', (req, res) => {
+  let query = `${req.params.addressType} in ${req.params.countryOrCityName}`;
   const url = `https://www.google.com/maps/search/${query}`;
   const userInput = req.params.countryOrCityName;
 
